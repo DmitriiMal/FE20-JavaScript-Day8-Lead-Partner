@@ -13,8 +13,8 @@ let productsRow = document.querySelector('.product-list');
 
 for (let product of products) {
   productsRow.innerHTML += `
-  <div class="col-sm-4">
-          <section class="card panel">
+  <div class="col-sm-6 col-md-4 col-lg-3">
+          <section class="card panel shadow">
             <div class="pro-img-box">
               <img
                 src="${product.img}"
@@ -67,7 +67,7 @@ const createRows = () => {
   let result = '';
   for (let item of cart) {
     result += `
-        <div class="panel-body my-cart">
+        <div class="panel-body my-cart shadow">
           <img
             src="${item.img}"
             alt="${item.name}" />
@@ -117,7 +117,11 @@ const cartTotal = () => {
     amound += product.quantity;
   });
 
-  if (priceSum >= 500) {
+  if (amound == 0) {
+    document.getElementById('cart-price').innerHTML = `
+    <h3 class="text-center">Your cart is empty  <i class="fa-solid fa-wind"></i></h3>
+  `;
+  } else if (priceSum >= 500) {
     total = priceSum - (priceSum * discount) / 100;
     document.getElementById('cart-price').innerHTML = `
   <p class="text-right">You have ${amound} items in your cart</p>
@@ -129,6 +133,7 @@ const cartTotal = () => {
     document.getElementById('cart-price').innerHTML = `
   <p class="text-right">You have ${amound} items in your cart</p>
   <h3 class="text-right">Total: ${currencyFormater.format(priceSum)}</h3>
+  <p class="text-right discount">Order over &euro; 500 and get your discount 10&percnt;!</p>
   `;
   }
 };
