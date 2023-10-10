@@ -121,7 +121,7 @@ const cartTotal = () => {
     document.getElementById('cart-price').innerHTML = `
     <h3 class="text-center">Your cart is empty  <i class="fa-solid fa-wind"></i></h3>
   `;
-  } else if (priceSum >= 500) {
+  } else if (priceSum >= 400) {
     total = priceSum - (priceSum * discount) / 100;
     document.getElementById('cart-price').innerHTML = `
   <p class="text-right">You have ${amound} items in your cart</p>
@@ -133,7 +133,7 @@ const cartTotal = () => {
     document.getElementById('cart-price').innerHTML = `
   <p class="text-right">You have ${amound} items in your cart</p>
   <h3 class="text-right">Total: ${currencyFormater.format(priceSum)}</h3>
-  <p class="text-right discount">Order over &euro; 500 and get your discount 10&percnt;!</p>
+  <p class="text-right discount">Order over &euro; 400 and get your discount 10&percnt;!</p>
   `;
   }
 };
@@ -143,7 +143,6 @@ const plusQtty = (index) => {
   cart[index].quantity++;
   createRows();
   cartTotal();
-  // calcAmound();
 };
 
 //decreases item quantity
