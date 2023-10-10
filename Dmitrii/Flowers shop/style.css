@@ -30,6 +30,10 @@ body {
   align-items: center;
 }
 
+.discount {
+  color: #fc5959;
+}
+
 .product-list .pro-img-box {
   position: relative;
 }

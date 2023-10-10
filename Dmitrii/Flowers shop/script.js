@@ -1,6 +1,6 @@
 const products = JSON.parse(productsStr);
 
-console.table(products);
+// console.table(products);
 
 //current object formatter
 const currencyFormater = new Intl.NumberFormat('de-AT', {
@@ -8,7 +8,7 @@ const currencyFormater = new Intl.NumberFormat('de-AT', {
   currency: 'EUR',
 });
 
-//select the products row and add items dynamically
+//select the products and add items dynamically
 let productsRow = document.querySelector('.product-list');
 
 for (let product of products) {
@@ -45,21 +45,21 @@ const cart = [];
 //adds product to cart
 const addToCart = (product) => {
   if (cart.find((val) => val.name == product.name)) {
-    console.log(cart.find((val) => val.name == product.name));
-    product.qtty++;
+    // console.log(cart.find((val) => val.name == product.name));
+    product.quantity++;
   } else {
     cart.push(product);
   }
-  console.table(cart);
+  // console.table(cart);
   createRows();
-  // cartTotal();
+  cartTotal();
 };
 
 //add event to add to cart buttons
 addToCartBtn.forEach((btn, i) => {
   btn.addEventListener('click', () => {
     addToCart(products[i]);
-    console.table(cart);
+    // console.table(cart);
   });
 });
 
@@ -67,7 +67,6 @@ const createRows = () => {
   let result = '';
   for (let item of cart) {
     result += `
-
         <div class="panel-body my-cart">
           <img
             src="${item.img}"
@@ -79,9 +78,72 @@ const createRows = () => {
           <button class="btn del"><i class="fa-solid fa-trash"></i></button>
           <p class="price">${currencyFormater.format(item.price)}</p>
         </div>
-
-  
     `;
   }
   document.querySelector('.cart').innerHTML = result;
+  const plusBtns = document.querySelectorAll('.plus');
+  const minusBtns = document.querySelectorAll('.minus');
+  const deleteBtns = document.querySelectorAll('.del');
+
+  plusBtns.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      plusQtty(i);
+    });
+  });
+
+  minusBtns.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      minusQtty(i);
+    });
+  });
+
+  deleteBtns.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      deleteItem(i);
+    });
+  });
+};
+
+let amound = 0;
+
+//updates the cart total amount
+const cartTotal = () => {
+  let priceSum = 0;
+  let discount = 10;
+  let total = 0;
+  for (const item of cart) {
+    total += item.price * item.quantity;
+  }
+  document.getElementById('cart-price').innerHTML = `
+  <p class="text-right">You have ${amound} items in your cart</p>
+  <p class="text-right">Price: ${currencyFormater.format(priceSum)}</p>
+  <p class="text-right discount">Discount: ${discount}&percnt;</p>
+  <h3 class="text-right">Total: ${currencyFormater.format(total)}</h3>
+  `;
+};
+
+//increases item quantity
+const plusQtty = (index) => {
+  cart[index].quantity++;
+  createRows();
+  cartTotal();
+};
+
+//decreases item quantity
+const minusQtty = (index) => {
+  if (cart[index].quantity == 1) {
+    cart.splice(index, 1);
+  } else {
+    cart[index].quantity--;
+  }
+  createRows();
+  cartTotal();
+};
+
+//deletes item from cart
+const deleteItem = (index) => {
+  cart[index].quantity = 1;
+  cart.splice(index, 1);
+  createRows();
+  cartTotal();
 };
