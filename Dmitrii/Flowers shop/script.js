@@ -104,22 +104,33 @@ const createRows = () => {
   });
 };
 
-let amound = 0;
-
 //updates the cart total amount
 const cartTotal = () => {
+  let amound = 0;
   let priceSum = 0;
   let discount = 10;
   let total = 0;
   for (const item of cart) {
-    total += item.price * item.quantity;
+    priceSum += item.price * item.quantity;
   }
-  document.getElementById('cart-price').innerHTML = `
+  cart.forEach((product) => {
+    amound += product.quantity;
+  });
+
+  if (priceSum >= 500) {
+    total = priceSum - (priceSum * discount) / 100;
+    document.getElementById('cart-price').innerHTML = `
   <p class="text-right">You have ${amound} items in your cart</p>
   <p class="text-right">Price: ${currencyFormater.format(priceSum)}</p>
   <p class="text-right discount">Discount: ${discount}&percnt;</p>
   <h3 class="text-right">Total: ${currencyFormater.format(total)}</h3>
   `;
+  } else {
+    document.getElementById('cart-price').innerHTML = `
+  <p class="text-right">You have ${amound} items in your cart</p>
+  <h3 class="text-right">Total: ${currencyFormater.format(priceSum)}</h3>
+  `;
+  }
 };
 
 //increases item quantity
@@ -127,6 +138,7 @@ const plusQtty = (index) => {
   cart[index].quantity++;
   createRows();
   cartTotal();
+  // calcAmound();
 };
 
 //decreases item quantity
